@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IWeatherService {
     CityWeather getCurrentWeather();
+
     List<CityWeather> getPastWeather();
 }
