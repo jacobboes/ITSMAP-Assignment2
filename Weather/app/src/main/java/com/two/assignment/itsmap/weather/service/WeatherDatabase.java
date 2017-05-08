@@ -24,7 +24,7 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
     private static final String COLUMN_NAME_DESCRIPTION = "description";
     private static final String COLUMN_NAME_TEMP = "temp";
     private static final String COLUMN_NAME_TIME = "time";
-    private long LastInsertedId;
+    private static final String COLUMN_NAME_ICON = "icon";
 
     public WeatherDatabase(Context context) {
         super(context, NAME, null, VERSION);
@@ -36,7 +36,8 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
                 COLUMN_NAME_ID + " LONG PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME_DESCRIPTION + " TEXT, "+
                 COLUMN_NAME_TEMP + " DOUBLE, "+
-                COLUMN_NAME_TIME + " LONG)";
+                COLUMN_NAME_TIME + " LONG, "+
+                COLUMN_NAME_ICON + " TEXT )";
 
         db.execSQL(CREATE_WEATHER_TABLE);
     }
@@ -58,35 +59,35 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
         values.put(COLUMN_NAME_DESCRIPTION, data.description);
         values.put(COLUMN_NAME_TEMP, data.temp);
         values.put(COLUMN_NAME_TIME, data.date.getTime());
+        values.put(COLUMN_NAME_ICON, data.icon);
 
 
-        LastInsertedId = db.insert(TABLE_NAME, null, values);
+        db.insert(TABLE_NAME, null, values);
         CleanUp(db);
         return true;
     }
 
     @Override
     public WeatherInfo getCurrentWeather() {
-        if (LastInsertedId != 0) {
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_ID+" = ?",
-                    new String[] {String.valueOf(LastInsertedId)});
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME , null);
 
-            if (cursor.getCount() == 1)
-            {
-                WeatherInfo returnVal = CursorToObj(cursor);
-                cursor.close();
-                db.close();
-                return returnVal;
-            }
+        if (cursor.getCount() > 0)
+        {
+            cursor.moveToLast();
+            WeatherInfo returnVal = CursorToObj(cursor);
+            cursor.close();
+            db.close();
+            return returnVal;
         }
-        return null;
+
+        return new WeatherInfo();
     }
 
     @Override
     public List<WeatherInfo> getPastWeather() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_NAME_ID + " DESC", null);
 
         List<WeatherInfo> returnVal = new ArrayList<>();
         while(cursor.moveToNext()) {
@@ -103,6 +104,7 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
         returnVal.description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_DESCRIPTION));
         returnVal.temp = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_NAME_TEMP));
         returnVal.date.setTime(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_TIME)));
+        returnVal.icon = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_ICON));
         return returnVal;
     }
 
