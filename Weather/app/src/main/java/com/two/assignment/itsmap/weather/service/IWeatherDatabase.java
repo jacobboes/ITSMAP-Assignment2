@@ -4,7 +4,7 @@ import com.two.assignment.itsmap.weather.model.WeatherInfo;
 
 import java.util.List;
 
-public interface IWeatherService {
+public interface IWeatherDatabase{
     WeatherInfo getCurrentWeather();
 
     List<WeatherInfo> getPastWeather();

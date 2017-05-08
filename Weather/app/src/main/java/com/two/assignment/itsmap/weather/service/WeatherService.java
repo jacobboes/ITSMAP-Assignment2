@@ -9,7 +9,7 @@ import com.two.assignment.itsmap.weather.model.WeatherInfo;
 
 import java.util.List;
 
-public class WeatherService extends Service implements IWeatherService {
+public class WeatherService extends Service {
     public WeatherService() {
     }
 
@@ -19,13 +19,5 @@ public class WeatherService extends Service implements IWeatherService {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    @Override
-    public WeatherInfo getCurrentWeather() {
-        return null;
-    }
 
-    @Override
-    public List<WeatherInfo> getPastWeather() {
-        return null;
-    }
 }
