@@ -74,6 +74,7 @@ public class WeatherService extends Service {
         return weatherDatabase.getPastWeather();
     }
 
+    // http://www.codexpedia.com/android/asynctask-and-httpurlconnection-sample-in-android/ - Reference to sample code
     private class getLatestWeather extends AsyncTask<Void, Void, String> {
 
         @Override
