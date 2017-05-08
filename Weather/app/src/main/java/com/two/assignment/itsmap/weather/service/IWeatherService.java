@@ -1,11 +1,11 @@
 package com.two.assignment.itsmap.weather.service;
 
-import com.two.assignment.itsmap.weather.model.CityWeather;
+import com.two.assignment.itsmap.weather.model.WeatherInfo;
 
 import java.util.List;
 
 public interface IWeatherService {
-    CityWeather getCurrentWeather();
+    WeatherInfo getCurrentWeather();
 
-    List<CityWeather> getPastWeather();
+    List<WeatherInfo> getPastWeather();
 }

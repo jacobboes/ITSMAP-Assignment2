@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.two.assignment.itsmap.weather.model.CityWeather;
+import com.two.assignment.itsmap.weather.model.WeatherInfo;
 
 import java.util.List;
 
@@ -19,12 +20,12 @@ public class WeatherService extends Service implements IWeatherService {
     }
 
     @Override
-    public CityWeather getCurrentWeather() {
+    public WeatherInfo getCurrentWeather() {
         return null;
     }
 
     @Override
-    public List<CityWeather> getPastWeather() {
+    public List<WeatherInfo> getPastWeather() {
         return null;
     }
 }
