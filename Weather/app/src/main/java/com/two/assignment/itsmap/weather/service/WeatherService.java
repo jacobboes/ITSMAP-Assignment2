@@ -7,6 +7,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.two.assignment.itsmap.weather.app.WeatherActivity;
 import com.two.assignment.itsmap.weather.model.CityWeather;
 import com.two.assignment.itsmap.weather.model.WeatherInfo;
@@ -25,7 +27,6 @@ import java.util.TimerTask;
 public class WeatherService extends Service {
 
     private final IBinder IWeatherBinder = new WeatherBinder();
-    public static String jsonURL = "http://api.openweathermap.org/data/2.5/weather?id=q";
     IWeatherDatabase weatherDatabase;
 
     Timer timer;
@@ -83,7 +84,7 @@ public class WeatherService extends Service {
 
             try {
                 // Construct the URL for OpenWeatherMap query and open connection
-                URL url = new URL("api.openweathermap.org/data/2.5/weather?id=q");
+                URL url = new URL(WeatherUtil.WEATHER_API);
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -131,13 +132,24 @@ public class WeatherService extends Service {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            // handle db
+            weatherDatabase.Insert(JsonToWeatherInfo(s));
 
             // Broadcast intent for main activity
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction(WeatherUtil.BROADCAST_WEATHER);
             sendBroadcast(broadcastIntent);
 
+        }
+
+        private WeatherInfo JsonToWeatherInfo(String s) {
+            Gson gson = new GsonBuilder().create();
+            CityWeather weatherInfo = gson.fromJson(s, CityWeather.class);
+            WeatherInfo retval = new WeatherInfo();
+            retval.date.setTime(weatherInfo.dt);
+            retval.temp = weatherInfo.main.temp;
+            retval.description = weatherInfo.weather.get(0).description;
+            retval.icon = weatherInfo.weather.get(0).icon;
+            return retval;
         }
     }
 }
