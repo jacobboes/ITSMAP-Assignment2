@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,8 +31,8 @@ public class WeatherService extends Service {
     IWeatherDatabase weatherDatabase;
 
     Timer timer;
-    int Interval = 30;
-    int TimerInterval = 60 * 1000 * Interval;
+    int Interval = 1;
+    int TimerInterval = 60  * Interval;
 
 
     public WeatherService() {
@@ -148,8 +150,11 @@ public class WeatherService extends Service {
             Gson gson = new GsonBuilder().create();
             CityWeather weatherInfo = gson.fromJson(s, CityWeather.class);
             WeatherInfo retval = new WeatherInfo();
+            retval.date = new Date();
             retval.date.setTime(weatherInfo.dt);
-            retval.temp = weatherInfo.main.temp;
+
+            DecimalFormat twoDForm = new DecimalFormat("#.##");
+            retval.temp = Double.valueOf(twoDForm.format(weatherInfo.main.temp -273.15)); //Kelvin to Celsius
             retval.description = weatherInfo.weather.get(0).description;
             retval.icon = weatherInfo.weather.get(0).icon;
             return retval;

@@ -6,13 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.two.assignment.itsmap.weather.model.Weather;
 import com.two.assignment.itsmap.weather.model.WeatherInfo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 //https://developer.android.com/training/basics/data-storage/databases.html
 public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabase {
@@ -33,7 +31,7 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_WEATHER_TABLE = "CREATE TABLE "+TABLE_NAME+" ( " +
-                COLUMN_NAME_ID + " LONG PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME_DESCRIPTION + " TEXT, "+
                 COLUMN_NAME_TEMP + " DOUBLE, "+
                 COLUMN_NAME_TIME + " LONG, "+
@@ -63,7 +61,8 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
 
 
         db.insert(TABLE_NAME, null, values);
-        CleanUp(db);
+        //TODO
+        //CleanUp(db);
         return true;
     }
 
@@ -103,6 +102,7 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
         returnVal.id = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_ID));
         returnVal.description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_DESCRIPTION));
         returnVal.temp = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_NAME_TEMP));
+        returnVal.date = new Date();
         returnVal.date.setTime(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_TIME)));
         returnVal.icon = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_ICON));
         return returnVal;

@@ -47,6 +47,7 @@ public class WeatherActivity extends AppCompatActivity {
         pastWeatherView = (ListView) findViewById(R.id.pastWeather);
         pastWeatherAdapter = new WeatherAdapter(this, pastWeather);
         pastWeatherView.setAdapter(pastWeatherAdapter);
+
     }
 
     private void initViews() {
@@ -88,6 +89,7 @@ public class WeatherActivity extends AppCompatActivity {
         // Bind to LocalService
         Intent intent = new Intent(this, WeatherService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        refreshWeather();
     }
 
     private ServiceConnection connection = new ServiceConnection() {
