@@ -7,4 +7,5 @@ public class WeatherInfo {
     public String description;
     public double temp;
     public Date date;
+    public String icon;
 }
