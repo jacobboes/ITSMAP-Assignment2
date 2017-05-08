@@ -41,7 +41,7 @@ public class WeatherService extends Service {
     public void onCreate(){
         super.onCreate();
         weatherDatabase = new WeatherDatabase(getApplicationContext());
-
+        Log.i("Weather Service", "onCreate called");
         new getLatestWeather().execute();
 
         timer = new Timer();
@@ -65,10 +65,12 @@ public class WeatherService extends Service {
     }
 
     public WeatherInfo getCurrentWeather() {
+        Log.i("Weather Service", "getCurrentWeather called");
         return weatherDatabase.getCurrentWeather();
     }
 
     public List<WeatherInfo> getPastWeather() {
+        Log.i("Weather Service", "getPastWeather called");
         return weatherDatabase.getPastWeather();
     }
 
@@ -81,7 +83,7 @@ public class WeatherService extends Service {
 
             // Raw JSON response as String
             String foreCastJsonStr = null;
-
+            Log.i("Weather Service", "Background call to Weather API");
             try {
                 // Construct the URL for OpenWeatherMap query and open connection
                 URL url = new URL(WeatherUtil.WEATHER_API);
@@ -133,12 +135,13 @@ public class WeatherService extends Service {
             super.onPostExecute(s);
 
             weatherDatabase.Insert(JsonToWeatherInfo(s));
+            Log.i("Weather Service", "Entry saved in Database");
 
             // Broadcast intent for main activity
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction(WeatherUtil.BROADCAST_WEATHER);
             sendBroadcast(broadcastIntent);
-
+            Log.i("Weather Service", "Broadcasted intent");
         }
 
         private WeatherInfo JsonToWeatherInfo(String s) {
