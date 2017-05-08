@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.two.assignment.itsmap.weather.app.WeatherActivity;
 import com.two.assignment.itsmap.weather.model.CityWeather;
 import com.two.assignment.itsmap.weather.model.WeatherInfo;
 import com.two.assignment.itsmap.weather.util.WeatherUtil;
@@ -31,14 +30,14 @@ public class WeatherService extends Service {
 
     Timer timer;
     int Interval = 30;
-    int TimerInterval = 60*1000*Interval;
+    int TimerInterval = 60 * 1000 * Interval;
 
 
     public WeatherService() {
     }
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
         weatherDatabase = new WeatherDatabase(getApplicationContext());
 
@@ -59,7 +58,7 @@ public class WeatherService extends Service {
     }
 
     public class WeatherBinder extends Binder {
-        WeatherService getService() {
+        public WeatherService getService() {
             return WeatherService.this;
         }
     }
@@ -99,18 +98,18 @@ public class WeatherService extends Service {
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line;
-                while((line = reader.readLine()) != null){
+                while ((line = reader.readLine()) != null) {
                     // Adding new lines to buffer, for easier debugging
                     buffer.append(line + "\n");
                 }
 
-                if (buffer.length() == 0){
+                if (buffer.length() == 0) {
                     return null;
                 }
                 foreCastJsonStr = buffer.toString();
                 return foreCastJsonStr;
 
-            } catch (IOException e){
+            } catch (IOException e) {
                 Log.e("PlaceholderFragment", "Error ", e);
                 return null;
             } finally {
@@ -118,7 +117,7 @@ public class WeatherService extends Service {
                     urlConnection.disconnect();
                 }
 
-                if (reader != null){
+                if (reader != null) {
                     try {
                         reader.close();
                     } catch (final IOException e) {
