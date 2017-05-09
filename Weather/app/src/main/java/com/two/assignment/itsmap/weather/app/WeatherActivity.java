@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.two.assignment.itsmap.weather.R;
 import com.two.assignment.itsmap.weather.model.WeatherInfo;
@@ -64,11 +65,16 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 refreshWeather();
+                showRefreshToast();
             }
         });
     }
 
-    public void setupWeatherReceiver() {
+    private void showRefreshToast() {
+        Toast.makeText(this, "Refreshing weather", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setupWeatherReceiver() {
         weatherReceiver = new WeatherReceiver(new WeatherReceiverAction() {
             @Override
             public void doAction() {
@@ -98,7 +104,6 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to LocalService
         Intent intent = new Intent(this, WeatherService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         refreshWeather();
@@ -108,7 +113,6 @@ public class WeatherActivity extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
             WeatherService.WeatherBinder binder = (WeatherService.WeatherBinder) service;
             WeatherActivity.this.service = binder.getService();
             isServiceBound = true;
