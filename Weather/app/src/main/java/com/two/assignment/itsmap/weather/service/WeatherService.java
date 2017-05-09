@@ -43,7 +43,6 @@ public class WeatherService extends Service {
         super.onCreate();
         weatherDatabase = new WeatherDatabase(getApplicationContext());
         Log.i("Weather Service", "onCreate called");
-        new getLatestWeather().execute();
 
         timer = new Timer();
         timer.schedule(new TimerTask() {
