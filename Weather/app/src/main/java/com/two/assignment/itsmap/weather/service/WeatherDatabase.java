@@ -56,13 +56,12 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_DESCRIPTION, data.description);
         values.put(COLUMN_NAME_TEMP, data.temp);
-        values.put(COLUMN_NAME_TIME, data.date.getTime());
+        values.put(COLUMN_NAME_TIME, System.currentTimeMillis());
         values.put(COLUMN_NAME_ICON, data.icon);
 
 
         db.insert(TABLE_NAME, null, values);
         db.close();
-        //TODO
         CleanUp();
         return true;
     }
@@ -103,7 +102,7 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
         returnVal.id = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_ID));
         returnVal.description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_DESCRIPTION));
         returnVal.temp = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_NAME_TEMP));
-        returnVal.date = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_TIME))*1000);
+        returnVal.date = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_TIME)));
         returnVal.icon = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_ICON));
         return returnVal;
     }
