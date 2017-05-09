@@ -31,7 +31,7 @@ public class WeatherService extends Service {
     IWeatherDatabase weatherDatabase;
 
     Timer timer;
-    int Interval = 1;
+    int Interval = 10;
     int TimerInterval = 60  * Interval;
 
 
@@ -51,7 +51,7 @@ public class WeatherService extends Service {
             public void run() {
                 new getLatestWeather().execute();
             }
-        }, TimerInterval);
+        }, 0, TimerInterval);
     }
 
     @Override
