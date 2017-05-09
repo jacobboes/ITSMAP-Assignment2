@@ -103,8 +103,7 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
         returnVal.id = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_ID));
         returnVal.description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_DESCRIPTION));
         returnVal.temp = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_NAME_TEMP));
-        returnVal.date = new Date();
-        returnVal.date.setTime(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_TIME)));
+        returnVal.date = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NAME_TIME)*1000));
         returnVal.icon = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_ICON));
         return returnVal;
     }
