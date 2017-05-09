@@ -69,7 +69,8 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void doAction() {
                 if (isServiceBound) {
-                    pastWeather = service.getPastWeather();
+                    pastWeather.clear();
+                    pastWeather.addAll(service.getPastWeather());
                     pastWeatherAdapter.notifyDataSetChanged();
                     refreshWeather();
                 }
