@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <receiver
+        <!--<receiver
             android:name=".app.WeatherReceiver"
             android:enabled="true"
             android:exported="true">
@@ -35,7 +35,7 @@
                 </action>
             </intent-filter>
 
-        </receiver>
+        </receiver>-->
     </application>
 
 </manifest>

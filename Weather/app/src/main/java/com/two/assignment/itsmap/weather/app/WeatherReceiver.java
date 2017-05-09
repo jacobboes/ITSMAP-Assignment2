@@ -10,9 +10,9 @@ public class WeatherReceiver extends BroadcastReceiver {
 
     private WeatherReceiverAction action;
 
-    public WeatherReceiver() {
+    //public WeatherReceiver() {
 
-    }
+    //}
 
     public WeatherReceiver(WeatherReceiverAction action) {
         this.action = action;

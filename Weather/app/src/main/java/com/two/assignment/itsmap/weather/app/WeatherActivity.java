@@ -3,6 +3,7 @@ package com.two.assignment.itsmap.weather.app;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.two.assignment.itsmap.weather.R;
 import com.two.assignment.itsmap.weather.model.WeatherInfo;
 import com.two.assignment.itsmap.weather.service.WeatherService;
+import com.two.assignment.itsmap.weather.util.WeatherUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +75,7 @@ public class WeatherActivity extends AppCompatActivity {
                 }
             }
         });
+        registerReceiver(weatherReceiver, new IntentFilter(WeatherUtil.BROADCAST_WEATHER));
     }
 
     private void refreshWeather() {
