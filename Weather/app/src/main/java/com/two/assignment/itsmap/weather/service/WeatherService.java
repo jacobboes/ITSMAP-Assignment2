@@ -31,7 +31,7 @@ public class WeatherService extends Service {
     IWeatherDatabase weatherDatabase;
 
     Timer timer;
-    int Interval = 1;
+    int Interval = 30;
     int TimerInterval = 60 * 1000 * Interval;
 
 
@@ -43,7 +43,6 @@ public class WeatherService extends Service {
         super.onCreate();
         weatherDatabase = new WeatherDatabase(getApplicationContext());
         Log.i("Weather Service", "onCreate called");
-        new getLatestWeather().execute();
 
         timer = new Timer();
         timer.schedule(new TimerTask() {
