@@ -31,7 +31,7 @@ public class WeatherService extends Service {
     IWeatherDatabase weatherDatabase;
 
     Timer timer;
-    int Interval = 1;
+    int Interval = 30;
     int TimerInterval = 60 * 1000 * Interval;
 
 
