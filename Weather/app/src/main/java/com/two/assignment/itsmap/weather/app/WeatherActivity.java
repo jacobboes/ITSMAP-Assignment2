@@ -62,7 +62,7 @@ public class WeatherActivity extends AppCompatActivity {
         });
     }
 
-    private void setupWeatherReceiver() {
+    public void setupWeatherReceiver() {
         weatherReceiver = new WeatherReceiver(new WeatherReceiverAction() {
             @Override
             public void doAction() {

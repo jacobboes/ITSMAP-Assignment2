@@ -18,10 +18,6 @@ public class WeatherReceiver extends BroadcastReceiver {
         this.action = action;
     }
 
-    public void setAction(WeatherReceiverAction action) {
-        this.action = action;
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(WeatherUtil.BROADCAST_WEATHER)) {

@@ -29,7 +29,13 @@
         <receiver
             android:name=".app.WeatherReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="COM.TWO.ASSIGNMENT.ITSMAP.BROADCAST">
+                </action>
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>

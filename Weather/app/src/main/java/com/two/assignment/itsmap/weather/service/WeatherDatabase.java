@@ -61,8 +61,9 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
 
 
         db.insert(TABLE_NAME, null, values);
+        db.close();
         //TODO
-        //CleanUp(db);
+        CleanUp();
         return true;
     }
 
@@ -108,9 +109,10 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
         return returnVal;
     }
 
-    private void CleanUp(SQLiteDatabase db){
+    private void CleanUp(){
         //http://stackoverflow.com/questions/11771580/deleting-android-sqllite-rows-older-than-x-days
-        db.rawQuery("DELETE FORM "+ TABLE_NAME+ " WHERE " + COLUMN_NAME_TIME + " <= date('now','-1 day')", null);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.rawQuery("DELETE FROM "+ TABLE_NAME+ " WHERE " + COLUMN_NAME_TIME + " <= date('now','-1 day')", null);
         db.close();
     }
 }
