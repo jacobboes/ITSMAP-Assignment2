@@ -1,6 +1,8 @@
 package com.two.assignment.itsmap.weather.app;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.two.assignment.itsmap.weather.R;
 import com.two.assignment.itsmap.weather.model.WeatherInfo;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -38,13 +41,18 @@ public class WeatherAdapter extends ArrayAdapter<WeatherInfo> {
             view = inflater.inflate(R.layout.weather_adapter, null);
         }
 
-        WeatherInfo item = getItem(position);
+        final WeatherInfo item = getItem(position);
         if (item != null) {
-            ImageView image = (ImageView) view.findViewById(R.id.adapterImage);
+            final ImageView image = (ImageView) view.findViewById(R.id.adapterImage);
             TextView description = (TextView) view.findViewById(R.id.adapterDescription);
             TextView temp = (TextView) view.findViewById(R.id.adapterTemp);
             TextView date = (TextView) view.findViewById(R.id.adapterDate);
             TextView time = (TextView) view.findViewById(R.id.adapterTime);
+
+            int resId = view.getResources().getIdentifier("r" + item.icon, "raw", getContext().getPackageName());
+            InputStream input = view.getResources().openRawResource(resId);
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            image.setImageBitmap(bitmap);
 
             description.setText(item.description);
             temp.setText(item.temp + getContext().getString(R.string.celsius));

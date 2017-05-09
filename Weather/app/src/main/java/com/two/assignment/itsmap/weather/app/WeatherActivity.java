@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ import com.two.assignment.itsmap.weather.model.WeatherInfo;
 import com.two.assignment.itsmap.weather.service.WeatherService;
 import com.two.assignment.itsmap.weather.util.WeatherUtil;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +32,7 @@ public class WeatherActivity extends AppCompatActivity {
     private WeatherAdapter pastWeatherAdapter;
     private ListView pastWeatherView;
 
+    private ImageView weatherIcon;
     private TextView temperature;
     private TextView description;
     private FloatingActionButton refresh;
@@ -43,16 +48,15 @@ public class WeatherActivity extends AppCompatActivity {
         startService(new Intent(this, WeatherService.class));
 
         initViews();
-
         setupWeatherReceiver();
         pastWeather = new ArrayList<>();
         pastWeatherView = (ListView) findViewById(R.id.pastWeather);
         pastWeatherAdapter = new WeatherAdapter(this, pastWeather);
         pastWeatherView.setAdapter(pastWeatherAdapter);
-
     }
 
     private void initViews() {
+        weatherIcon = (ImageView) findViewById(R.id.weatherIcon);
         temperature = (TextView) findViewById(R.id.temperature);
         description = (TextView) findViewById(R.id.description);
         refresh = (FloatingActionButton) findViewById(R.id.refreshWeather);
@@ -84,6 +88,10 @@ public class WeatherActivity extends AppCompatActivity {
             WeatherInfo currentWeather = service.getCurrentWeather();
             description.setText(currentWeather.description);
             temperature.setText(currentWeather.temp + getString(R.string.celsius));
+            int resId = getResources().getIdentifier("r" + currentWeather.icon, "raw", getPackageName());
+            InputStream input = getResources().openRawResource(resId);
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            weatherIcon.setImageBitmap(bitmap);
         }
     }
 
