@@ -49,7 +49,7 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
 
     @Override
     public boolean Insert(WeatherInfo data) {
-        if(data == null)
+        if(data == null || !IsAllowedToUpdate())
             return false;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -95,6 +95,21 @@ public class WeatherDatabase extends SQLiteOpenHelper implements IWeatherDatabas
         cursor.close();
         db.close();
         return returnVal;
+    }
+
+    private boolean IsAllowedToUpdate(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " +TABLE_NAME + " ORDER BY " + COLUMN_NAME_ID + " DESC LIMIT 1", null);
+
+        List<WeatherInfo> returnVal = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            returnVal.add(CursorToObj(cursor));
+        }
+        cursor.close();
+        db.close();
+        if (returnVal.isEmpty())
+            return true;
+        return returnVal.get(0).date.getTime() <= System.currentTimeMillis()- 1800000;
     }
 
     private WeatherInfo CursorToObj(Cursor cursor){

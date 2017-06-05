@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -152,8 +151,7 @@ public class WeatherService extends Service {
             retval.date = new Date();
             retval.date.setTime(weatherInfo.dt);
 
-            DecimalFormat twoDForm = new DecimalFormat("#.##");
-            retval.temp = Double.valueOf(twoDForm.format(weatherInfo.main.temp -273.15)); //Kelvin to Celsius
+            retval.temp = weatherInfo.main.temp -273.15; //Kelvin to Celsius
             retval.description = weatherInfo.weather.get(0).description;
             retval.icon = weatherInfo.weather.get(0).icon;
             return retval;

@@ -71,7 +71,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     private void showRefreshToast() {
-        Toast.makeText(this, "Refreshing weather", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.RefreshingWeather, Toast.LENGTH_SHORT).show();
     }
 
     private void setupWeatherReceiver() {
@@ -79,21 +79,27 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void doAction() {
                 if (isServiceBound) {
-                    pastWeather.clear();
-                    pastWeather.addAll(service.getPastWeather());
-                    pastWeatherAdapter.notifyDataSetChanged();
-                    refreshWeather();
+                    refreshView();
                 }
             }
         });
         registerReceiver(weatherReceiver, new IntentFilter(WeatherUtil.BROADCAST_WEATHER));
     }
 
+    private void refreshView() {
+        pastWeather.clear();
+        pastWeather.addAll(service.getPastWeather());
+        pastWeatherAdapter.notifyDataSetChanged();
+        refreshWeather();
+    }
+
     private void refreshWeather() {
         if (isServiceBound) {
             WeatherInfo currentWeather = service.getCurrentWeather();
+            if (currentWeather.icon == null)
+                return;
             description.setText(currentWeather.description);
-            temperature.setText(currentWeather.temp + getString(R.string.celsius));
+            temperature.setText(String.format("%.2f", currentWeather.temp) + getString(R.string.celsius));
             int resId = getResources().getIdentifier("r" + currentWeather.icon, "raw", getPackageName());
             InputStream input = getResources().openRawResource(resId);
             Bitmap bitmap = BitmapFactory.decodeStream(input);
@@ -106,7 +112,6 @@ public class WeatherActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = new Intent(this, WeatherService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        refreshWeather();
     }
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -116,6 +121,7 @@ public class WeatherActivity extends AppCompatActivity {
             WeatherService.WeatherBinder binder = (WeatherService.WeatherBinder) service;
             WeatherActivity.this.service = binder.getService();
             isServiceBound = true;
+            refreshView();
         }
 
         @Override

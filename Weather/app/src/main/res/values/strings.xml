@@ -3,4 +3,5 @@
     <string name="past_24_hours">Past 24 hours:</string>
     <string name="celsius">\u2103</string>
     <string name="current">Current:</string>
+    <string name="RefreshingWeather">Refreshing weather</string>
 </resources>

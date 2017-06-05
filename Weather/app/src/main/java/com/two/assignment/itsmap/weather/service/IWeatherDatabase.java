@@ -10,4 +10,5 @@ public interface IWeatherDatabase{
     WeatherInfo getCurrentWeather();
 
     List<WeatherInfo> getPastWeather();
+
 }

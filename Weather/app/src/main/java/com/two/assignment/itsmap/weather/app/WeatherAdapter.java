@@ -55,7 +55,7 @@ public class WeatherAdapter extends ArrayAdapter<WeatherInfo> {
             image.setImageBitmap(bitmap);
 
             description.setText(item.description);
-            temp.setText(item.temp + getContext().getString(R.string.celsius));
+            temp.setText(String.format("%.2f", item.temp) + getContext().getString(R.string.celsius));
 
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
             date.setText(dateFormat.format(item.date));
